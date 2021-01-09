@@ -15,7 +15,13 @@ userSchema.virtual('id').get(function () {
 
 // Ensure virtual fields are serialised.
 userSchema.set('toJSON', {
-    virtuals: true
+    virtuals: true,
+    versionKey: false,
+    transform: function (doc, ret) {
+        // Remove these props when object is serialized
+        delete ret._id;
+        delete ret.password;
+    }
 });
 
 userSchema.findById = function (cb) {
@@ -23,7 +29,6 @@ userSchema.findById = function (cb) {
 };
 
 const User = mongoose.model('Users', userSchema);
-
 
 exports.findByEmail = (email) => {
     return User.find({email: email});

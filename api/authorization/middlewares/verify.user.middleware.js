@@ -24,22 +24,17 @@ exports.hasAuthValidFields = (req, res, next) => {
 
 exports.isPasswordAndUserMatch = (req, res, next) => {
     UserModel.findByEmail(req.body.email)
-        .then((user)=>{
-            if(!user[0]){
+        .then((users) => {
+            const user = users[0];
+            if (!user) {
                 console.log("User not found");
                 res.status(401).send({});
-            }else{
-                let passwordFields = user[0].password.split('$');
+            } else {
+                let passwordFields = user.password.split('$');
                 let salt = passwordFields[0];
                 let hash = crypto.createHmac('sha512', salt).update(req.body.password).digest("base64");
                 if (hash === passwordFields[1]) {
-                    req.body = {
-                        userId: user[0]._id,
-                        email: user[0].email,
-                        permissionLevel: user[0].permissionLevel,
-                        provider: 'email',
-                        name: user[0].firstName + ' ' + user[0].lastName,
-                    };
+                    req.body = user.toJSON();
                     return next();
                 } else {
                     return res.status(400).send({errors: ['Invalid e-mail or password']});

@@ -12,10 +12,9 @@ router.post('/', [
 ]);
 
 router.post('/refresh', [
-    AuthValidationMiddleware.validJWTNeeded,
     AuthValidationMiddleware.verifyRefreshBodyField,
-    AuthValidationMiddleware.validRefreshNeeded,
-    AuthorizationController.login
+    // AuthValidationMiddleware.validRefreshNeeded,
+    AuthorizationController.refreshToken
 ]);
 
 module.exports = router;
