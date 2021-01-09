@@ -13,12 +13,12 @@ exports.hasAuthValidFields = (req, res, next) => {
         }
 
         if (errors.length) {
-            return res.status(400).send({errors: errors.join(',')});
+            return res.status(400).send({errors: errors});
         } else {
             return next();
         }
     } else {
-        return res.status(400).send({errors: 'Missing email and password fields'});
+        return res.status(400).send({errors: ['Missing email and password fields']});
     }
 };
 
@@ -26,7 +26,8 @@ exports.isPasswordAndUserMatch = (req, res, next) => {
     UserModel.findByEmail(req.body.email)
         .then((user)=>{
             if(!user[0]){
-                res.status(404).send({});
+                console.log("User not found");
+                res.status(401).send({});
             }else{
                 let passwordFields = user[0].password.split('$');
                 let salt = passwordFields[0];

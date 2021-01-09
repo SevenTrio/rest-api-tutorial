@@ -1,7 +1,7 @@
-const jwtSecret = require('../../common/config/env.config.js').jwt_secret,
-    jwt = require('jsonwebtoken');
+const jwtSecret = require('../../../common/config/env.config.js').jwt_secret;
+const expirationIn = require('../../../common/config/env.config.js').jwt_expiration_in_seconds;
+const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const uuid = require('uuid');
 
 exports.login = (req, res) => {
     try {
@@ -9,7 +9,7 @@ exports.login = (req, res) => {
         let salt = crypto.randomBytes(16).toString('base64');
         let hash = crypto.createHmac('sha512', salt).update(refreshId).digest("base64");
         req.body.refreshKey = salt;
-        let token = jwt.sign(req.body, jwtSecret);
+        let token = jwt.sign(req.body, jwtSecret, { expiresIn: expirationIn });
         let b = Buffer.from(hash);
         let refresh_token = b.toString('base64');
         res.status(201).send({accessToken: token, refreshToken: refresh_token});

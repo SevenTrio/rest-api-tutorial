@@ -1,4 +1,7 @@
 .idea
 **/node_modules
 data
+frontend
 yarn.lock
+.env
+package-lock.json

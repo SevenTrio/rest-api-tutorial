@@ -1,13 +1,13 @@
 module.exports = {
-    "port": 3600,
-    "appEndpoint": "http://localhost:3600",
-    "apiEndpoint": "http://localhost:3600",
-    "jwt_secret": "myS33!!creeeT",
-    "jwt_expiration_in_seconds": 36000,
-    "environment": "dev",
+    "port": process.env.PORT,
+    "appEndpoint": process.env.APP_ENDPOINT,
+    "apiEndpoint": process.env.API_ENDPOINT,
+    "jwt_secret": process.env.JWT_SECRET,
+    "jwt_expiration_in_seconds": process.env.JWT_EXPIRATION_IN_SECONDS,
+    "environment": process.env.NODE_ENV === "development" ? "development" : "production",
     "permissionLevels": {
         "NORMAL_USER": 1,
         "PAID_USER": 4,
-        "ADMIN": 2048
-    }
+        "ADMIN": 2048,
+    },
 };
